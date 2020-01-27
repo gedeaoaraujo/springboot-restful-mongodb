@@ -12,13 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService { 
-    
+public class UserService {
+
     @Autowired
-    private UserRepository repository; 
-    
+    private UserRepository repository;
+
     public List<User> findAll() {
-         return repository.findAll();
+        return repository.findAll();
     }
 
     public User findById(String id) {
@@ -26,16 +26,27 @@ public class UserService {
         return user.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado"));
     }
 
-    public User insert(User user){
+    public User insert(User user) {
         return repository.insert(user);
     }
 
-    public void delete(String id){
+    public void delete(String id) {
         findById(id);
         repository.deleteById(id);
     }
 
-    public User fromDTO(UserDTO userDTO){
+    public User update(User user) {
+        Optional<User> newUser = repository.findById(user.getId());
+        updateUser(newUser, user);
+        return repository.save(newUser.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado")));
+    }
+
+    private void updateUser(Optional<User> newUser, User user) {
+        newUser.get().setName(user.getName());
+        newUser.get().setEmail(user.getEmail());
+    }
+
+    public User fromDTO(UserDTO userDTO) {
         return new User(
             userDTO.getId(),
             userDTO.getName(), 
