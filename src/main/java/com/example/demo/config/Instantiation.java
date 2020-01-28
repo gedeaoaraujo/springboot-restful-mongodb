@@ -6,6 +6,7 @@ import java.util.TimeZone;
 
 import com.example.demo.domain.Post;
 import com.example.demo.domain.User;
+import com.example.demo.dto.AuthorDTO;
 import com.example.demo.repository.PostRepository;
 import com.example.demo.repository.UserRepository;
 
@@ -35,10 +36,11 @@ public class Instantiation implements CommandLineRunner {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-        Post post1 = new Post(null, simpleDateFormat.parse("21/03/2018"), "Partiu Viagem", "Vou viajar para SãoPaulo, abraços", maria);
-        Post post2 = new Post(null, simpleDateFormat.parse("21/03/2018"), "Bom dia", "Acordei feliz hoje!", maria);
-
         userRepository.saveAll(Arrays.asList(maria, alex, bob));
+
+        Post post1 = new Post(null, simpleDateFormat.parse("21/03/2018"), "Partiu Viagem", "Vou viajar para SãoPaulo, abraços", new AuthorDTO(maria));
+        Post post2 = new Post(null, simpleDateFormat.parse("21/03/2018"), "Bom dia", "Acordei feliz hoje!", new AuthorDTO(maria));
+
         postRepository.saveAll(Arrays.asList(post1, post2));
     }
 }
